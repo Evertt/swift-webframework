@@ -2,6 +2,12 @@ import Foundation
 
 public class Application {
     let router = Router()
+    var pipeline = Pipeline()
+    let dispatcher = Dispatcher()
+    
+    public func add(middleware: Middleware) {
+        self.pipeline.append(middleware)
+    }
     
     public func get(path: String, _ pipeline: Handler...) {
         router.add(Route(.GET, path: path), pipeline: pipeline)
@@ -17,7 +23,14 @@ public class Application {
 
     public func dispatch(method: HttpMethod, uri: String) throws {
         let request = Request(method: method, uri: uri)
-        let response = try router.dispatch(request)
+        
+        guard let pipeline = self.router.match(method, uri: uri) else {
+            let response = Response()
+            response.statusCode = 404
+            return print(response)
+        }
+        
+        let response = try dispatcher.dispatch(self.pipeline + pipeline, request: request)
 
         print(response)
     }

@@ -2,18 +2,30 @@
 
 import Foundation
 
+var globalMiddleware: Middleware = {
+    req, res, nxt in
+    
+    res.body = "Modified by global middleware:\n" + res.body
+    
+    try nxt(req, res)
+}
+
+var routeMiddleware: Middleware = {
+    request, response, next in
+    
+    response.headers["Content-Type"] = "text/html"
+    
+    response.body.appendContentsOf("Hello ")
+    
+    try next(request, response)
+    
+    response.body.appendContentsOf(" World!")
+}
+
+app.add(globalMiddleware)
+
 app.get("/users",
-    {
-        request, response, next in
-        
-        response.headers["Content-Type"] = "text/html"
-        
-        response.body.appendContentsOf("Hello ")
-        
-        try next(request, response)
-        
-        response.body.appendContentsOf(" World!")
-    },
+    routeMiddleware,
     {
         request, response, next in
         
