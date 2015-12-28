@@ -1,10 +1,5 @@
 import Foundation
 
-public typealias Middleware = Handler
-public typealias Pipeline   = [Handler]
-public typealias Next       = (Request, Response) throws -> ()
-public typealias Handler    = (Request, Response, Next) throws -> ()
-
 public class Router {
     var routes = OrderedDictionary<Route, Pipeline>()
     
@@ -12,10 +7,10 @@ public class Router {
         self.routes[route] = pipeline
     }
     
-    public func match(method: HttpMethod, uri: String) -> Pipeline? {
+    public func match(method: HttpMethod, uri: String) -> (Pipeline, [Any])? {
         for (route, pipeline) in routes {
-            if route.matches(method, uri: uri) {
-                return pipeline
+            if let parameters = route.match(method, uri: uri) {
+                return (pipeline, parameters)
             }
         }
         

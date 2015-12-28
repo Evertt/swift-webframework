@@ -31,22 +31,27 @@ public struct Route : Hashable {
         self.segments = routeSegments
     }
     
-    func matches(method: HttpMethod, uri: String) -> Bool {
-        if (method != self.method) { return false }
+    func match(method: HttpMethod, uri: String) -> [Any]? {
+        var parameters = [Any]()
+        if (method != self.method) { return nil }
         
         let uriSegments = uri.componentsSeparatedByString("/").filter { $0 != "" }
         
         for (index, segment) in uriSegments.enumerate() {
             if (index >= self.segments.count) {
-                return false
+                return nil
             }
             
             if self.segments[index].matches(segment) == false {
-                return false
+                return nil
+            }
+            
+            if let parameter = self.segments[index].getParameter(segment) {
+                parameters.append(parameter)
             }
         }
         
-        return true
+        return parameters
     }
 }
 
