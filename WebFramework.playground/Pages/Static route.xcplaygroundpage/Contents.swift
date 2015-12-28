@@ -1,5 +1,3 @@
-//: Playground - noun: a place where people can play
-
 import Foundation
 
 var globalMiddleware: Middleware = {
@@ -29,10 +27,10 @@ app.get("/users",
     {
         request, response, next in
         
-        // This line has no effect,
-        // cause this is the last handler,
-        // but I just want to show that
-        // having it doesn't hurt either
+        /// This line has no effect,
+        /// cause this is the last handler,
+        /// but I just want to show that
+        /// having it doesn't hurt either
         try next(request, response)
         
         response.body.appendContentsOf("great")
@@ -48,3 +46,5 @@ app.get("/users/{id:[0-9]+}",
 )
 
 try app.dispatch(HttpMethod.GET, uri: "/users/4")
+
+//: [Next](@next)

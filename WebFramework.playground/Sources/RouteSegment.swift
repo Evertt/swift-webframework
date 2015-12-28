@@ -9,6 +9,7 @@ protocol RouteSegment {
     
     func matches(uriSegment: String) -> Bool
     func isEqualTo(other: RouteSegment) -> Bool
+    func getParameter(uriSegment: String) -> Any?
 }
 
 extension Equatable where Self : RouteSegment {
@@ -18,10 +19,12 @@ extension Equatable where Self : RouteSegment {
     }
 }
 
+/// A dynamic route segment represents the `{id:[0-9]+}` in `/users/{id:[0-9]+}`
 struct DynamicRouteSegment : RouteSegment, Equatable {
     let name: String
     let type: String
     let optional: Bool
+    var parameter: String? = nil
     
     init(pathSegment: String) throws {
         var type: String?
@@ -46,7 +49,19 @@ struct DynamicRouteSegment : RouteSegment, Equatable {
     }
     
     func matches(uriSegment: String) -> Bool {
-        return true
+        if uriSegment.match(self.type) {
+            return true
+        }
+        
+        if uriSegment == "" {
+            return self.optional
+        }
+        
+        return false
+    }
+    
+    func getParameter(uriSegment: String) -> Any? {
+        return self.parameter
     }
 }
 
@@ -54,6 +69,7 @@ func == (lhs: DynamicRouteSegment, rhs: DynamicRouteSegment) -> Bool {
     return lhs.name == rhs.name && lhs.type == rhs.type && lhs.optional == rhs.optional
 }
 
+/// A static route segment represents the `users` in `/users/{id:[0-9]+}`
 struct StaticRouteSegment : RouteSegment, Equatable {
     let routeSegment: String
     
@@ -63,6 +79,10 @@ struct StaticRouteSegment : RouteSegment, Equatable {
     
     func matches(uriSegment: String) -> Bool {
         return self.routeSegment == uriSegment
+    }
+    
+    func getParameter(uriSegment: String) -> Any? {
+        return nil
     }
 }
 

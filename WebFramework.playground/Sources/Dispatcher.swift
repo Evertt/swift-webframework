@@ -3,7 +3,7 @@ import Foundation
 class Dispatcher {
     let response = Response()
     
-    func dispatch(pipeline: Pipeline, request: Request) throws -> Response {
+    func dispatch(pipeline: Pipeline, request: Request, parameters: [Any]) throws -> Response {
         let start = pipeline.reverse().reduce({_, _ in}, combine: self.buildPipeline)
         
         try start(request, response)
