@@ -38,8 +38,6 @@ public class Application {
         let response = try dispatcher.run(request, through: self.pipeline + pipeline)
 
         print(response)
-        
-        response.clear()
     }
 }
 

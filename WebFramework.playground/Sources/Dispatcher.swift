@@ -1,9 +1,9 @@
 import Foundation
 
 class Dispatcher {
-    let response = Response()
-    
     func run(request: Request, through pipeline: Pipeline) throws -> Response {
+        let response = Response()
+        
         let start = pipeline.reverse().reduce({$0}, combine: self.buildPipeline)
         
         try start(request, response)

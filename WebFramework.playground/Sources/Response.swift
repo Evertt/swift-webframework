@@ -30,10 +30,4 @@ public class Response: CustomStringConvertible {
             headers.reduce("", combine: {"\($0)\($1.0): \($1.1)\n"}) +
             "\n\(body)"
     }
-    
-    public func clear() {
-        statusCode = 200
-        headers = [:]
-        body = ""
-    }
 }
