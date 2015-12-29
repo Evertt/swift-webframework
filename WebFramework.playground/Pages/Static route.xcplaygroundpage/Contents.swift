@@ -11,6 +11,6 @@ app.get("/users")
     return (request, response)
 }
 
-try app.dispatch(HttpMethod.GET, uri: "/users")
+try app.dispatch("GET /users")
 
 //: [Next](@next)

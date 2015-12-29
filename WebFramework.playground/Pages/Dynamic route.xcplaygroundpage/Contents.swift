@@ -10,6 +10,6 @@ app.put("/users/:id")
     return (request, response)
 }
 
-try app.dispatch(.PUT, uri: "/users/2")
+try app.dispatch("PUT /users/2")
 
 //: [Next](@next)

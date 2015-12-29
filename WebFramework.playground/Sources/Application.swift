@@ -19,8 +19,8 @@ public class Application {
         router.add(Route(.PUT, path: path), pipeline: pipeline)
     }
 
-    public func dispatch(method: HttpMethod, uri: String) throws {
-        let request = Request(method: method, uri: uri)
+    public func dispatch(requestString: String) throws {
+        let request = Request(request: requestString)
         
         guard let pipeline = self.router.match(request) else {
             let response = Response()
