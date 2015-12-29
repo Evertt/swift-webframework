@@ -19,7 +19,7 @@ app.add(globalMiddleware)
 
 app.get("/users",
     {
-        request, response, _ in
+        (request, var response, _) in
         
         response.body.appendContentsOf("This route has middleware")
         

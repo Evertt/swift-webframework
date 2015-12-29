@@ -20,10 +20,10 @@ public class Application {
     }
 
     public func dispatch(requestString: String) throws {
-        let request = Request(request: requestString)
+        var request = Request(request: requestString)
         
-        guard let pipeline = self.router.match(request) else {
-            let response = Response()
+        guard let pipeline = self.router.match(&request) else {
+            var response = Response()
             response.statusCode = 404
             return print(response)
         }

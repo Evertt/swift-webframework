@@ -5,7 +5,7 @@ public class Router {
         self.routes.append((route, pipeline))
     }
     
-    public func match(request: Request) -> Pipeline? {
+    public func match(inout request: Request) -> Pipeline? {
         for (route, pipeline) in routes {
             if let parameters = route.match(request.method, request.path) {
                 request.parameters = parameters

@@ -1,6 +1,6 @@
 import Foundation
 
-public class Request {
+public struct Request {
     public let path: String
     public let body: String
     public let version: String

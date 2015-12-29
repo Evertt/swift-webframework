@@ -17,7 +17,7 @@ var routeMiddleware: Middleware = {
 
 app.get("/users",
     {
-        request, response, _ in
+        (request, var response, _) in
         
         response.body.appendContentsOf("This route doesn't have middleware")
         
@@ -28,7 +28,7 @@ app.get("/users",
 app.get("/users/:id",
     routeMiddleware, // <-- Look here the middleware is added
     {
-        request, response, _ in
+        (request, var response, _) in
         
         response.body.appendContentsOf("This route has middleware")
         

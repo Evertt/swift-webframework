@@ -3,9 +3,9 @@
 
 app.put("/users/:id")
 {
-    request, response, _ in
+    (request, var response, _) in
     
-    response.body = "id = " + request.parameters["id"]!
+    response.body = String(request.parameters)
     
     return (request, response)
 }

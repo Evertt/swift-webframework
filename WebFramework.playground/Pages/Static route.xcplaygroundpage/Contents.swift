@@ -3,7 +3,7 @@
 
 app.get("/users")
 {
-    request, response, _ in
+    (request, var response, _) in
     
     response.headers["Content-Type"] = "text/html"
     response.body = "<p>Hello You!</p>"

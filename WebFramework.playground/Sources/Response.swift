@@ -1,4 +1,4 @@
-public class Response: CustomStringConvertible {
+public struct Response: CustomStringConvertible {
     public var statusCode = 200
     public var headers = Headers()
     public var body = String()
