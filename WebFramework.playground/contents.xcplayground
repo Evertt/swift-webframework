@@ -3,5 +3,7 @@
     <pages>
         <page name='Static route'/>
         <page name='Dynamic route'/>
+        <page name='Route middleware'/>
+        <page name='Global middleware'/>
     </pages>
 </playground>

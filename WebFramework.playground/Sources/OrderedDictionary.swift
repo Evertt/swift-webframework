@@ -1,6 +1,6 @@
 import Foundation
 
-public struct OrderedDictionary<Tk: Hashable, Tv> : MutableCollectionType {
+public struct OrderedDictionary<Tk: Hashable, Tv> : MutableCollectionType, DictionaryLiteralConvertible {
     var keys: Array<Tk> = []
     var values: Dictionary<Tk,Tv> = [:]
     
@@ -20,6 +20,13 @@ public struct OrderedDictionary<Tk: Hashable, Tv> : MutableCollectionType {
     
     public var endIndex: Index {
         return self.keys.endIndex
+    }
+    
+    public init(dictionaryLiteral elements: (Tk, Tv)...) {
+        for (key, value) in elements {
+            self.keys.append(key)
+            self.values[key] = value
+        }
     }
     
     public subscript(index: Index) -> (Tk, Tv) {

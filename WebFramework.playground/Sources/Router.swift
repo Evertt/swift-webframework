@@ -7,10 +7,10 @@ public class Router {
         self.routes[route] = pipeline
     }
     
-    public func match(method: HttpMethod, uri: String) -> (Pipeline, [Any])? {
+    public func match(method: HttpMethod, uri: String) -> Pipeline? {
         for (route, pipeline) in routes {
-            if let parameters = route.match(method, uri: uri) {
-                return (pipeline, parameters)
+            if route.match(method, uri: uri) {
+                return pipeline
             }
         }
         
