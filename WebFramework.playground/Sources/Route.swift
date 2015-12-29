@@ -1,15 +1,3 @@
-import Foundation
-
-public enum HttpMethod {
-    case GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS
-}
-
-extension String {
-    var pathSegments: [String] {
-        return self.componentsSeparatedByString("/").filter { $0 != "" }
-    }
-}
-
 public struct Route {
     let method: HttpMethod
     let segments: [String]

@@ -1,8 +1,3 @@
-public typealias Middleware = Handler
-public typealias Pipeline   = [Handler]
-public typealias Next       = (Request, Response) throws -> ()
-public typealias Handler    = (Request, Response, Next) throws -> ()
-
 public class Application {
     let router = Router()
     var pipeline = Pipeline()
