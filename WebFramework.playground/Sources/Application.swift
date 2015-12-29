@@ -1,5 +1,3 @@
-import Foundation
-
 public typealias Middleware = Handler
 public typealias Pipeline   = [Handler]
 public typealias Next       = (Request, Response) throws -> ()

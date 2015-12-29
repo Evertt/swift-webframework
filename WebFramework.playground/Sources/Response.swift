@@ -1,5 +1,3 @@
-import Foundation
-
 public class Response: CustomStringConvertible {
     public var statusCode = 200
     public var headers = [String:String]()

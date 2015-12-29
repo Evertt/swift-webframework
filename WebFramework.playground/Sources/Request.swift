@@ -1,5 +1,3 @@
-import Foundation
-
 public class Request {
     public let method: HttpMethod
     public let uri: String

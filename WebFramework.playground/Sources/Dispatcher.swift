@@ -1,5 +1,3 @@
-import Foundation
-
 class Dispatcher {
     func run(request: Request, through pipeline: Pipeline) throws -> Response {
         let response = Response()

@@ -1,5 +1,3 @@
-import Foundation
-
 public class Router {
     var routes = [(Route, Pipeline)]()
     
