@@ -34,10 +34,6 @@ public struct Route: Hashable {
         
         let segments = uri.pathSegments
         
-        if self.segments.isEmpty && segments.isEmpty {
-            return true
-        }
-        
         if self.segments.count != segments.count {
             return false
         }
