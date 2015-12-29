@@ -3,8 +3,8 @@ import Foundation
 public typealias Middleware      = Handler
 public typealias Pipeline        = [Handler]
 public typealias RouteParameters = [String:String]
-public typealias Next            = (Request, Response) throws -> ()
-public typealias Handler         = (Request, Response, Next) throws -> ()
+public typealias Next            = (Request, Response) throws -> (Request, Response)
+public typealias Handler         = (Request, Response, Next) throws -> (Request, Response)
 
 public enum HttpMethod {
     case GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS

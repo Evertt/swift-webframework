@@ -2,31 +2,37 @@
 //: ## This demonstrates how you can add middleware to specific routes
 
 var routeMiddleware: Middleware = {
-    request, response, next in
+    (var request, var response, next) in
     
     response.headers["Content-Type"] = "text/html"
     
     response.body.appendContentsOf("Content prepended to body by middleware...\n")
     
-    try next(request, response)
+    (request, response) = try next(request, response)
     
     response.body.appendContentsOf("\nContent appended to body by middleware...")
+    
+    return (request, response)
 }
 
 app.get("/users",
     {
-        _, response, _ in
+        request, response, _ in
         
         response.body.appendContentsOf("This route doesn't have middleware")
+        
+        return (request, response)
     }
 )
 
 app.get("/users/:id",
     routeMiddleware, // <-- Look here the middleware is added
     {
-        _, response, _ in
+        request, response, _ in
         
         response.body.appendContentsOf("This route has middleware")
+        
+        return (request, response)
     }
 )
 

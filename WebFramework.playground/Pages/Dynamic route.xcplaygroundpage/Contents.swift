@@ -6,6 +6,8 @@ app.put("/users/:id")
     request, response, _ in
     
     response.body = "id = " + request.parameters["id"]!
+    
+    return (request, response)
 }
 
 try app.dispatch(.PUT, uri: "/users/2")

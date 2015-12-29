@@ -1,10 +1,10 @@
 class Dispatcher {
     func run(request: Request, through pipeline: Pipeline) throws -> Response {
-        let response = Response()
+        var response = Response()
         
-        let start = pipeline.reverse().reduce({$0}, combine: self.buildPipeline)
+        let start = pipeline.reverse().reduce({($0, $1)}, combine: self.buildPipeline)
         
-        try start(request, response)
+        (_, response) = try start(request, response)
         
         return response
     }

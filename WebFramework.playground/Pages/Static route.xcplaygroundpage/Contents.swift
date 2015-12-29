@@ -3,10 +3,12 @@
 
 app.get("/users")
 {
-    _, response, _ in
+    request, response, _ in
     
     response.headers["Content-Type"] = "text/html"
     response.body = "<p>Hello You!</p>"
+    
+    return (request, response)
 }
 
 try app.dispatch(HttpMethod.GET, uri: "/users")
