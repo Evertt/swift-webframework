@@ -4,7 +4,7 @@ class Dispatcher {
     let response = Response()
     
     func dispatch(pipeline: Pipeline, request: Request) throws -> Response {
-        let start = pipeline.reverse().reduce({_, _ in}, combine: self.buildPipeline)
+        let start = pipeline.reverse().reduce({$0}, combine: self.buildPipeline)
         
         try start(request, response)
         
