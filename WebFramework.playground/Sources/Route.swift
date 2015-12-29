@@ -8,7 +8,7 @@ public struct Route {
     }
     
     func match(method: HttpMethod, _ uri: String) -> [String:String]? {
-        var parameters = RouteParameters()
+        var parameters = Parameters()
         
         if self.method != method {
             return nil

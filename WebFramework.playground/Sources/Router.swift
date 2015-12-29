@@ -7,7 +7,7 @@ public class Router {
     
     public func match(request: Request) -> Pipeline? {
         for (route, pipeline) in routes {
-            if let parameters = route.match(request.method, request.uri) {
+            if let parameters = route.match(request.method, request.path) {
                 request.parameters = parameters
                 
                 return pipeline

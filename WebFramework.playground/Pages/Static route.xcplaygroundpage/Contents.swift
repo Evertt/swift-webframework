@@ -9,6 +9,6 @@ app.get("/users")
     response.body = "<p>Hello You!</p>"
 }
 
-try app.dispatch(HttpMethod.GET, uri: "/users")
+try app.dispatch("GET /users")
 
 //: [Next](@next)

@@ -30,10 +30,10 @@ app.get("/users/:id",
     }
 )
 
-try app.dispatch(HttpMethod.GET, uri: "/users")
+try app.dispatch("GET /users")
 
 print("\n--------------NEXT--REQUEST--------------\n")
 
-try app.dispatch(HttpMethod.GET, uri: "/users/1")
+try app.dispatch("GET /users/1")
 
 //: [Next](@next)
