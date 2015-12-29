@@ -3,13 +3,11 @@
 
 app.put("/users/:id")
 {
-    _, response, _ in
-        
-    response.body = "For this demo I didn't " +
-                    "make it possible yet to get " +
-                    "the value of the route parameter"
+    request, response, _ in
+    
+    response.body = "id = " + request.parameters["id"]!
 }
 
-try app.dispatch(.PUT, uri: "/users/1")
+try app.dispatch(.PUT, uri: "/users/2")
 
 //: [Next](@next)

@@ -5,9 +5,11 @@ public class Router {
         self.routes.append((route, pipeline))
     }
     
-    public func match(method: HttpMethod, _ uri: String) -> Pipeline? {
+    public func match(request: Request) -> Pipeline? {
         for (route, pipeline) in routes {
-            if route.match(method, uri) {
+            if let parameters = route.match(request.method, request.uri) {
+                request.parameters = parameters
+                
                 return pipeline
             }
         }
