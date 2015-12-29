@@ -1,15 +1,15 @@
 import Foundation
 
 public class Router {
-    var routes = OrderedDictionary<Route, Pipeline>()
+    var routes = [(Route, Pipeline)]()
     
     public func add(route: Route, pipeline: Pipeline) {
-        self.routes[route] = pipeline
+        self.routes.append((route, pipeline))
     }
     
-    public func match(method: HttpMethod, uri: String) -> Pipeline? {
+    public func match(method: HttpMethod, _ uri: String) -> Pipeline? {
         for (route, pipeline) in routes {
-            if route.match(method, uri: uri) {
+            if route.match(method, uri) {
                 return pipeline
             }
         }

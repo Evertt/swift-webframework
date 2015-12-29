@@ -27,7 +27,7 @@ public struct Route: Hashable {
         self.segments = path.pathSegments
     }
     
-    func match(method: HttpMethod, uri: String) -> Bool {
+    func match(method: HttpMethod, _ uri: String) -> Bool {
         if self.method != method {
             return false
         }

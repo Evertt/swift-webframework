@@ -29,18 +29,17 @@ public class Application {
     public func dispatch(method: HttpMethod, uri: String) throws {
         let request = Request(method: method, uri: uri)
         
-        guard let pipeline = self.router.match(method, uri: uri) else {
+        guard let pipeline = self.router.match(method, uri) else {
             let response = Response()
             response.statusCode = 404
             return print(response)
         }
         
-        let response = try dispatcher.dispatch(self.pipeline + pipeline, request: request)
+        let response = try dispatcher.run(request, through: self.pipeline + pipeline)
 
         print(response)
         
-        response.headers = [:]
-        response.body = ""
+        response.clear()
     }
 }
 
