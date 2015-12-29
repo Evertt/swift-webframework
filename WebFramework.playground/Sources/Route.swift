@@ -10,17 +10,9 @@ extension String {
     }
 }
 
-public func == (lhs: Route, rhs: Route) -> Bool {
-    return lhs.hashValue == rhs.hashValue
-}
-
-public struct Route: Hashable {
+public struct Route {
     let method: HttpMethod
     let segments: [String]
-    
-    public var hashValue: Int {
-        return "\(method)\(segments)".hashValue
-    }
     
     public init(_ method: HttpMethod, path: String) {
         self.method = method
