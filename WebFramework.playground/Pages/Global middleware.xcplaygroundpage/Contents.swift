@@ -25,9 +25,15 @@ app.get("/users",
 
 app.get("/users/:id",
     {
-        _, response, _ in
+        request, response, next in
         
         response.body.appendContentsOf("And this one too")
+        
+        // This line doesn't have any effect,
+        // because this is the last handler.
+        // I just wanted to show that it
+        // doesn't break anything if it's here.
+        try next(request, response)
     }
 )
 
