@@ -1,4 +1,5 @@
 //: [Previous](@previous)
+//: ## This demonstrates how you can add middleware globally, to all routes
 
 var globalMiddleware: Middleware = {
     request, response, next in
