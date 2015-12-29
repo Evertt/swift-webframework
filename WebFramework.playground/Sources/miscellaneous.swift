@@ -14,3 +14,5 @@ extension String {
         return self.componentsSeparatedByString("/").filter { $0 != "" }
     }
 }
+
+public let app = Application()

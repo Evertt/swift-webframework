@@ -33,5 +33,3 @@ public class Application {
         print(response)
     }
 }
-
-public let app = Application()
