@@ -7,15 +7,15 @@ public class Application {
         self.pipeline.append(middleware)
     }
     
-    public func get(path: String, _ pipeline: Handler...) {
+    public func get(path: String, _ pipeline: Middleware...) {
         router.add(Route(.GET, path: path), pipeline: pipeline)
     }
     
-    public func post(path: String, _ pipeline: Handler...) {
+    public func post(path: String, _ pipeline: Middleware...) {
         router.add(Route(.POST, path: path), pipeline: pipeline)
     }
     
-    public func put(path: String, _ pipeline: Handler...) {
+    public func put(path: String, _ pipeline: Middleware...) {
         router.add(Route(.PUT, path: path), pipeline: pipeline)
     }
 
@@ -23,9 +23,7 @@ public class Application {
         let request = Request(request: requestString)
         
         guard let pipeline = self.router.match(request) else {
-            let response = Response()
-            response.statusCode = 404
-            return print(response)
+            return print(Response(statusCode: 404))
         }
         
         let response = try dispatcher.run(request, through: self.pipeline + pipeline)

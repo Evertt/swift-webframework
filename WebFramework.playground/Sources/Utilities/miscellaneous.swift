@@ -1,11 +1,8 @@
-import Foundation
-
-public typealias Middleware = Handler
-public typealias Pipeline   = [Handler]
+public typealias Pipeline   = [Middleware]
 public typealias Headers    = [String:String]
 public typealias Parameters = [String:String]
 public typealias Next       = (Request, Response) throws -> ()
-public typealias Handler    = (Request, Response, Next) throws -> ()
+public typealias Middleware = (Request, Response, Next) throws -> ()
 
 public enum HttpMethod: String {
     case GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS

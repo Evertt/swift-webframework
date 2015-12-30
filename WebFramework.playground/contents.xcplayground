@@ -5,5 +5,6 @@
         <page name='Dynamic route'/>
         <page name='Route middleware'/>
         <page name='Global middleware'/>
+        <page name='UserController'/>
     </pages>
 </playground>

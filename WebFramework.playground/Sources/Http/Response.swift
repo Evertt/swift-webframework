@@ -22,6 +22,10 @@ public class Response: CustomStringConvertible {
         503: "Service Unavailable"
     ]
     
+    init(statusCode: Int? = nil) {
+        self.statusCode = statusCode ?? 200
+    }
+    
     public var description: String {
         return
             "HTTP/1.0 \(statusCode) \(httpStatuses[statusCode]!)\n" +
