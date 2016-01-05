@@ -21,29 +21,23 @@ public class Router {
         }
         
         if pipeline.isEmpty {
-            return Response(statusCode: 404)
+            return Response(status: .NotFound)
         }
         
         do {
             return try run(request, through: self.pipeline + pipeline)
         } catch {
-            let response = Response(statusCode: 500)
-            response.body = String(error)
-            return response
+            return Response(status: .InternalServerError, body: String(error))
         }
     }
     
     func run(request: Request, through pipeline: Pipeline) throws -> Response {
-        let response = Response()
+        let start = pipeline.reverse().reduce({_ in Response()}, combine: buildPipeline)
         
-        let start = pipeline.reverse().reduce({$1}, combine: self.buildPipeline)
-        
-        try start(request, response)
-        
-        return response
+        return try start(request)
     }
     
     private func buildPipeline(next: Next, middleware: Middleware) -> Next {
-        return { request, response in try middleware(request, response, next) }
+        return { request in try middleware(request, next) }
     }
 }

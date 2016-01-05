@@ -1,8 +1,8 @@
 public typealias Pipeline   = [Middleware]
-public typealias Headers    = [String:String]
+public typealias Header     = (String,String)
 public typealias Parameters = [String:String]
-public typealias Next       = (Request, Response) throws -> ()
-public typealias Middleware = (Request, Response, Next) throws -> ()
+public typealias Next       = (Request) throws -> Response
+public typealias Middleware = (Request, Next) throws -> Response
 
 public enum HttpMethod: String {
     case GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS

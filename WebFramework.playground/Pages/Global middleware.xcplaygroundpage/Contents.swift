@@ -2,38 +2,26 @@
 //: ## This demonstrates how you can add middleware globally, to all routes
 
 var globalMiddleware: Middleware = {
-    request, response, next in
+    request, next in let response = try next(request)
     
-    response.headers["Content-Type"] = "text/html"
-    
-    response.body.appendContentsOf("Content prepended to body by middleware...\n")
-    
-    try next(request, response)
-    
-    response.body.appendContentsOf("\nContent appended to body by middleware...")
+    return response.appendToBody("\nContent appended to body by middleware...")
 }
 
 app.add(globalMiddleware)
 
 app.get("/users",
     {
-        _, response, _ in
+        request, next in let response = try next(request)
         
-        response.body.appendContentsOf("This route has middleware")
+        return response.withText("This route has middleware")
     }
 )
 
 app.get("/users/:id",
     {
-        request, response, next in
+        request, next in let response = try next(request)
         
-        response.body.appendContentsOf("And this one too")
-        
-        // This line doesn't have any effect,
-        // because this is the last handler.
-        // I just wanted to show that it
-        // doesn't break anything if it's here.
-        try next(request, response)
+        return response.withText("And this one too")
     }
 )
 

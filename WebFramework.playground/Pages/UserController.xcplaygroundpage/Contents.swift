@@ -1,6 +1,6 @@
 //: [Previous](@previous)
 app.get("/users/:name") {
-    UserController($0,$1,$2).show()
+    try UserController($0, $1).show()
 }
 
 app.dispatch("GET /users/evert")

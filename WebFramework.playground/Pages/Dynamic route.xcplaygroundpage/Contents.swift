@@ -3,9 +3,9 @@
 
 app.put("/users/:id")
 {
-    request, response, _ in
+    request, next in let response = try next(request)
     
-    response.body = "id = " + request.parameters["id"]!
+    return response.withText("id = " + request.parameters["id"]!)
 }
 
 app.dispatch("PUT /users/2")

@@ -3,10 +3,9 @@
 
 app.get("/users")
 {
-    _, response, _ in
+    request, next in let response = try next(request)
     
-    response.headers["Content-Type"] = "text/html"
-    response.body = "<p>Hello You!</p>"
+    return response.withHtml("<p>Hello You!</p>")
 }
 
 app.dispatch("GET /users")
