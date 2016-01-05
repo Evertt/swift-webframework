@@ -1,10 +1,12 @@
 public struct Route {
     let method: HttpMethod
     let segments: [String]
+    let pipeline: Pipeline
     
-    public init(_ method: HttpMethod, path: String) {
+    public init(_ method: HttpMethod, path: String, pipeline: Pipeline) {
         self.method = method
         self.segments = path.pathSegments
+        self.pipeline = pipeline
     }
     
     func match(method: HttpMethod, _ uri: String) -> [String:String]? {

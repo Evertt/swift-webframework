@@ -8,6 +8,6 @@ app.put("/users/:id")
     response.body = "id = " + request.parameters["id"]!
 }
 
-try app.dispatch("PUT /users/2")
+app.dispatch("PUT /users/2")
 
 //: [Next](@next)

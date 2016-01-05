@@ -30,10 +30,10 @@ app.get("/users/:id",
     }
 )
 
-try app.dispatch("GET /users")
+app.dispatch("GET /users")
 
 print("\n--------------NEXT--REQUEST--------------\n")
 
-try app.dispatch("GET /users/1")
+app.dispatch("GET /users/1")
 
 //: [Next](@next)

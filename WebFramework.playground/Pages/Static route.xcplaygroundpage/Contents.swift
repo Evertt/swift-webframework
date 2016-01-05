@@ -9,6 +9,6 @@ app.get("/users")
     response.body = "<p>Hello You!</p>"
 }
 
-try app.dispatch("GET /users")
+app.dispatch("GET /users")
 
 //: [Next](@next)
