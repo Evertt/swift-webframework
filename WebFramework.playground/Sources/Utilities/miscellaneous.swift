@@ -1,3 +1,5 @@
+import Foundation
+
 public typealias Pipeline   = [Middleware]
 public typealias Header     = (String,String)
 public typealias Parameters = [String:String]
@@ -9,7 +11,7 @@ public enum HttpMethod: String {
 }
 
 extension Array {
-    func get(index: Int, orElse defaultValue: Element?) -> Element? {
+    func get(index: Int, orElse defaultValue: Element? = nil) -> Element? {
         if self.count < index {
             return self[index]
         } else {
@@ -23,16 +25,41 @@ extension String {
         return self.componentsSeparatedByString("/").filter { $0 != "" }
     }
     
+    var length: Int {
+        return self.characters.count
+    }
+    
     subscript (i: Int) -> Character {
-        return self[self.startIndex.advancedBy(i)]
+        get {
+            return self[self.startIndex.advancedBy(i)]
+        }
+        set(newChar) {
+            self.insert(newChar, atIndex: self.startIndex.advancedBy(i))
+        }
     }
     
     subscript (i: Int) -> String {
-        return String(self[i] as Character)
+        get {
+            return String(self[i] as Character)
+        }
+        set(newString) {
+            self.insertContentsOf(newString.characters, at: startIndex.advancedBy(i))
+        }
     }
     
     subscript (r: Range<Int>) -> String {
-        return substringWithRange(Range(start: startIndex.advancedBy(r.startIndex), end: startIndex.advancedBy(r.endIndex)))
+        get {
+            return substringWithRange(startIndex.advancedBy(r.startIndex)..<startIndex.advancedBy(r.endIndex))
+        }
+        set(newValue) {
+            let beginning = substringWithRange(startIndex..<startIndex.advancedBy(r.startIndex))
+            let ending = substringWithRange(startIndex.advancedBy(r.endIndex)...endIndex)
+            self = beginning + newValue + ending
+        }
+    }
+    
+    mutating func removeRange(subRange: Range<Int>) {
+        removeRange(startIndex.advancedBy(subRange.startIndex)..<startIndex.advancedBy(subRange.endIndex))
     }
     
     func substringFromAfterFirstOccurenceOf(string: String) -> String {
@@ -53,6 +80,22 @@ extension String {
         }
         
         return theDictionary
+    }
+    
+    func getMatches(regex: String, options: NSRegularExpressionOptions = NSRegularExpressionOptions()) throws -> [NSTextCheckingResult] {
+        let exp = try NSRegularExpression(pattern: regex, options: options)
+        let matches = exp.matchesInString(self, options: NSMatchingOptions(), range: NSMakeRange(0, self.length))
+        return matches as [NSTextCheckingResult]
+    }
+}
+
+extension Dictionary {
+    init(keys: [Key], values: [Value]) {
+        self.init()
+        
+        for (key, value) in zip(keys, values) {
+            self[key] = value
+        }
     }
 }
 

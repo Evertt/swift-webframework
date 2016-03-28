@@ -43,7 +43,7 @@ public struct Response: CustomStringConvertible {
     }
     
     public func withBody(body: String) -> Response {
-        return Response(status: status, body: body, headers: headers)
+        return Response(status: status, body: "\(self.body)\n\(body)", headers: headers)
     }
     
     public func appendToBody(appendix: String) -> Response {

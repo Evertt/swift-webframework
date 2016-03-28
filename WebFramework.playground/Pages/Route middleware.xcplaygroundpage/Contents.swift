@@ -15,7 +15,7 @@ app.get("/users",
     }
 )
 
-app.get("/users/:id",
+app.get("/users/{id:\\d+}",
     routeMiddleware, // <-- Look here the middleware is added
     {
         request, next in let response = try next(request)

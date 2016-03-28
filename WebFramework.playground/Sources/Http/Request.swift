@@ -9,17 +9,17 @@ public class Request {
     public let method: HttpMethod
     public var parameters = Parameters()
     
-    public init(var request: String) {
+    public init(request: String) {
         let scanner = NSScanner(string: request)
         
         method = HttpMethod(rawValue: scanner.scanUpToString(" ")!) ?? .GET
         let uri = scanner.scanUpToString(" ")!.componentsSeparatedByString("?")
         version = scanner.scanUpToString("\r\n") ?? ""
         
-        request = request.substringFromAfterFirstOccurenceOf("\r\n")
+        let r = request.substringFromAfterFirstOccurenceOf("\r\n")
         path = uri[0]
         query = uri.get(1, orElse: "")!.makeDictionaryBySplittingOn("&", and: "=")
-        headers = request.makeDictionaryBySplittingOn("\r\n", and: ": ").map{$0}
-        body = request.substringFromAfterFirstOccurenceOf("\r\n\r\n")
+        headers = r.makeDictionaryBySplittingOn("\r\n", and: ": ").map{$0}
+        body = r.substringFromAfterFirstOccurenceOf("\r\n\r\n")
     }
 }
