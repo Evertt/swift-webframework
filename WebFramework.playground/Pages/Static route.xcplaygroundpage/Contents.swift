@@ -12,6 +12,10 @@
 
 struct UserDied: Event {
     var name: String
+    
+    init(name: String) {
+        self.name = name
+    }
 }
 
 class UserWasBorn: Event {
@@ -22,27 +26,54 @@ class UserWasBorn: Event {
     }
 }
 
+func anyArrayToType<T>(anyArray: [Any]) -> [T] {
+    return anyArray.flatMap {
+        if let integer = $0 as? T {
+            return integer
+        }
+        
+        return nil
+    }
+}
+
 let daveDied = UserDied(name: "Dave")
 let bartWasBorn = UserWasBorn(year: 2000)
 
 var events = MyDispatcher()
 
 events.listen {
-    (event: UserDied) in
+    (event: UserDied) -> Int in
+    
+    print("1st was called")
+    //events.stopPropagating(event)
     
     return 5
 }
 
 events.listen {
-    (event: UserDied) in
+    (event: UserDied) -> Void in
     
-    print(event.name + "!")
+    print("2nd was called")
 }
 
 events.listen {
-    (event: UserDied) in
+    (event: UserDied) -> String? in
     
-    return event.name + "?"
+    print("3rd was called")
+    
+    if event.name == "Dave" {
+        return event.name + "?"
+    }
+    
+    return nil
+}
+
+events.listen {
+    (event: UserDied) -> Int in
+    
+    print("4th was called")
+    
+    return 32
 }
 
 events.listen {
@@ -51,7 +82,8 @@ events.listen {
     print(event.year)
 }
 
-print(events.fire(daveDied))
+print(events.fire(daveDied) as [Any])
+//events.fire(daveDied, shouldObeyHalt: true)
 //events.queue(UserWasBorn(year: 1990))
 //events.queue(UserWasBorn(year: 2013))
 //events.queue(UserDied(name: "Evert"))

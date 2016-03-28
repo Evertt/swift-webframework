@@ -1,12 +1,26 @@
 public protocol Event {}
 
+extension Event {
+    func isEqualTo (other: Event) -> Bool {
+        if let a = self as? AnyObject, let b = other as? AnyObject {
+            return a === b
+        }
+        
+        if let o = other as? Self {
+            return String(self.dynamicType) == String(o.dynamicType)
+        }
+        
+        return false
+    }
+}
+
 public protocol ErasedListener {
     func matches(eventType: Event.Type) -> Bool
     func dispatchIfMatches(event: Event) -> Any?
 }
 
-public struct Listener<I: Event, O>: ErasedListener {
-    let dispatch: I -> O
+public struct Listener<I: Event>: ErasedListener {
+    let dispatch: I -> Any
     
     public func matches(eventType: Event.Type) -> Bool {
         return matches(String(eventType))
@@ -26,8 +40,8 @@ public struct Listener<I: Event, O>: ErasedListener {
 }
 
 public protocol Dispatcher {
-    func listen<E: Event>(listener: E -> Void)
-    func fire(event: Event) -> [Any]
+    func listen<E: Event>(listener: E -> Any)
+    func fire(event: Event, shouldObeyHalt: Bool) -> [Any]
     func queue<E: Event>(event: E)
     func flushQueueOf<E: Event>(eventType: E.Type)
     func flushQueue()
@@ -40,25 +54,42 @@ public protocol Dispatcher {
 public class MyDispatcher: Dispatcher {
     var listeners = [ErasedListener]()
     var queuedEvents = [Event]()
+    var haltedEvents = [Event]()
     
     public init() {}
     
-    public func listen<E: Event, O>(listener: E -> O) {
+    public func listen<E: Event>(listener: E -> Any) {
         let concreteListener = Listener(dispatch: listener)
         
         listeners.append(concreteListener as ErasedListener)
     }
     
-    public func fire(event: Event) -> [Any] {
-        var responses = [Any]()
+    public func fire<T>(event: Event, shouldObeyHalt: Bool = true) -> [T] {
+        var responses = [T]()
         
         for listener in listeners {
-            if let response = listener.dispatchIfMatches(event) where ((response as? Void) == nil) {
+            if let response = listener.dispatchIfMatches(event) as? T
+            //where (response as? Void) == nil
+            {
                 responses.append(response)
+            }
+            
+            if let i = haltedEvents.indexOf({$0.isEqualTo(event)}) {
+                haltedEvents.removeAtIndex(i)
+                
+                if shouldObeyHalt { return responses }
             }
         }
         
         return responses
+    }
+    
+    public func fire(event: Event, shouldObeyHalt: Bool = true) {
+        fire(event, shouldObeyHalt: shouldObeyHalt) as [Void]
+    }
+    
+    public func stopPropagating(event: Event) {
+        haltedEvents.append(event)
     }
     
     public func queue<E: Event>(event: E) {
