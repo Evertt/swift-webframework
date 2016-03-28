@@ -5,8 +5,8 @@ public protocol ErasedListener {
     func dispatchIfMatches(event: Event)
 }
 
-public struct Listener<I: Event>: ErasedListener {
-    let dispatch: I -> Void
+public struct Listener<I: Event, O>: ErasedListener {
+    let dispatch: I -> O
     
     public func matches(eventType: Event.Type) -> Bool {
         return matches(String(eventType))
@@ -41,7 +41,7 @@ public class MyDispatcher: Dispatcher {
     
     public init() {}
     
-    public func listen<E: Event>(listener: E -> Void) {
+    public func listen<E: Event, O>(listener: E -> O) {
         let concreteListener = Listener(dispatch: listener)
         
         listeners.append(concreteListener as ErasedListener)
