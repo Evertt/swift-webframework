@@ -2,7 +2,7 @@ public protocol Event {}
 
 public protocol ErasedListener {
     func matches(eventType: Event.Type) -> Bool
-    func dispatchIfMatches(event: Event)
+    func dispatchIfMatches(event: Event) -> Any?
 }
 
 public struct Listener<I: Event, O>: ErasedListener {
@@ -16,16 +16,18 @@ public struct Listener<I: Event, O>: ErasedListener {
         return eventType == String(I.self)
     }
     
-    public func dispatchIfMatches(event: Event) {
+    public func dispatchIfMatches(event: Event) -> Any? {
         if matches(String(event.dynamicType)) {
-            dispatch(event as! I)
+            return dispatch(event as! I)
         }
+        
+        return nil
     }
 }
 
 public protocol Dispatcher {
     func listen<E: Event>(listener: E -> Void)
-    func fire(event: Event)
+    func fire(event: Event) -> [Any]
     func queue<E: Event>(event: E)
     func flushQueueOf<E: Event>(eventType: E.Type)
     func flushQueue()
@@ -47,10 +49,16 @@ public class MyDispatcher: Dispatcher {
         listeners.append(concreteListener as ErasedListener)
     }
     
-    public func fire(event: Event) {
+    public func fire(event: Event) -> [Any] {
+        var responses = [Any]()
+        
         for listener in listeners {
-            listener.dispatchIfMatches(event)
+            if let response = listener.dispatchIfMatches(event) where ((response as? Void) == nil) {
+                responses.append(response)
+            }
         }
+        
+        return responses
     }
     
     public func queue<E: Event>(event: E) {

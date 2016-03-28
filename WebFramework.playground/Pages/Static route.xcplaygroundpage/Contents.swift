@@ -30,7 +30,7 @@ var events = MyDispatcher()
 events.listen {
     (event: UserDied) in
     
-    print(event.name)
+    return 5
 }
 
 events.listen {
@@ -40,16 +40,22 @@ events.listen {
 }
 
 events.listen {
+    (event: UserDied) in
+    
+    return event.name + "?"
+}
+
+events.listen {
     (event: UserWasBorn) in
     
     print(event.year)
 }
 
-events.queue(daveDied)
-events.queue(UserWasBorn(year: 1990))
-events.queue(UserWasBorn(year: 2013))
-events.queue(UserDied(name: "Evert"))
-events.flushQueue()
+print(events.fire(daveDied))
+//events.queue(UserWasBorn(year: 1990))
+//events.queue(UserWasBorn(year: 2013))
+//events.queue(UserDied(name: "Evert"))
+//events.flushQueue()
 //print(daveDied.name)
 
 //: [Next](@next)
